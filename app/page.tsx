@@ -141,11 +141,13 @@ export default function Home() {
         {/* Footer */}
         <footer className="mt-16 pb-8 text-center">
           <p className="text-xs text-surface-600">
-            Powered by{" "}
+            Built by{" "}
+            <span className="text-surface-500">Sohaib Ahmad</span>
+            {" using "}
             <span className="text-surface-500">LangGraphJS</span>
-            {" + "}
-            <span className="text-surface-500">Flux</span>
-            {" + "}
+            {", "}
+            <span className="text-surface-500">FLUX</span>
+            {", and "}
             <span className="text-surface-500">GPT-4o-mini</span>
           </p>
         </footer>

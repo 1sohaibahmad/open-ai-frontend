@@ -1,16 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Trophy, RefreshCw, Quote } from "lucide-react";
 import type { GenerateResult } from "@/lib/api";
 import ScoreBreakdown from "./ScoreBreakdown";
 import CandidateGrid from "./CandidateGrid";
+import Lightbox from "./Lightbox";
 
 interface Props {
   result: GenerateResult;
 }
 
 export default function ResultCard({ result }: Props) {
+  const [lightbox, setLightbox] = useState<string | null>(null);
   const hasRefinement = result.iterations && result.iterations > 1;
 
   return (
@@ -24,7 +27,7 @@ export default function ResultCard({ result }: Props) {
       <div className="relative">
         <div className="absolute -inset-4 bg-gradient-to-r from-accent-600/20 via-accent-400/10 to-cyan-500/20 rounded-3xl blur-2xl" />
         <div className="relative bg-surface-950/90 border border-surface-700/50 rounded-2xl overflow-hidden glow-accent">
-          <div className="aspect-[4/3] sm:aspect-[16/9] relative">
+          <div className="aspect-[4/3] sm:aspect-[16/9] relative cursor-pointer" onClick={() => setLightbox(result.bestImageUrl)}>
             <img
               src={result.bestImageUrl}
               alt="Best generated image"
@@ -125,6 +128,13 @@ export default function ResultCard({ result }: Props) {
           bestImageUrl={result.bestImageUrl}
         />
       )}
+
+      <Lightbox
+        src={lightbox || ""}
+        alt="Full size image"
+        open={!!lightbox}
+        onClose={() => setLightbox(null)}
+      />
     </motion.div>
   );
 }

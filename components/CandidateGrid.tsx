@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Trophy } from "lucide-react";
 import type { Candidate } from "@/lib/api";
+import Lightbox from "./Lightbox";
 
 interface Props {
   candidates: Candidate[];
@@ -10,6 +12,8 @@ interface Props {
 }
 
 export default function CandidateGrid({ candidates, bestImageUrl }: Props) {
+  const [lightbox, setLightbox] = useState<string | null>(null);
+
   return (
     <div className="space-y-4">
       <h3 className="text-sm font-semibold text-surface-300 uppercase tracking-wider">
@@ -24,7 +28,8 @@ export default function CandidateGrid({ candidates, bestImageUrl }: Props) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className={`relative group rounded-lg overflow-hidden border ${
+              onClick={() => setLightbox(candidate.url)}
+              className={`relative group rounded-lg overflow-hidden border cursor-pointer ${
                 isWinner
                   ? "border-accent-500/50 ring-1 ring-accent-500/30"
                   : "border-surface-700/50"
@@ -66,6 +71,13 @@ export default function CandidateGrid({ candidates, bestImageUrl }: Props) {
           );
         })}
       </div>
+
+      <Lightbox
+        src={lightbox || ""}
+        alt="Full size image"
+        open={!!lightbox}
+        onClose={() => setLightbox(null)}
+      />
     </div>
   );
 }
